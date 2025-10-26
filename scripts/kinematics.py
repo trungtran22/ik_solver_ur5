@@ -98,7 +98,7 @@ def solve_theta1(P_c, d4):
         raise ValueError("Wrist center is too close to the base axis; no valid theta1.")
     
     phi = np.arctan2(y_c, x_c)
-    psi = np.arctan2(d4, np.sqrt(d_xy**2 - d4**2))
+    psi = np.arctan2(np.sqrt(d_xy**2 - d4**2),d4)
 
     #Standard DH needs to add pi/2
     theta1_1 = phi + psi + np.pi/2
@@ -224,8 +224,7 @@ def solve_ik(T_target, d_params, a_params):
         t2_pos, t2_neg = theta2_sols[i]
         t3_pos, t3_neg = theta3_sols[i]
 
-        arm_solutions_current_t1 = [(t1, t2_pos, t3_pos), (t1, t2_pos, t3_neg),
-                                    (t1, t2_neg, t3_pos), (t1, t2_neg, t3_neg)]
+        arm_solutions_current_t1 = [(t1, t2_pos, t3_pos), (t1, t2_neg, t3_neg)]
         for (t1_sol, t2_sol, t3_sol) in arm_solutions_current_t1:
             T3_6 = solve_wrist_matrix(t1_sol, t2_sol, t3_sol, T_target, d1, a2, a3, d4, d5, d6)
             theta5_sols = solve_theta5(T3_6)
